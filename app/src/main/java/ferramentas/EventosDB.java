@@ -36,6 +36,7 @@ public class  EventosDB extends SQLiteOpenHelper {
         db.execSQL(criaTabela);
     }
 
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
@@ -67,13 +68,16 @@ public class  EventosDB extends SQLiteOpenHelper {
     public ArrayList<Evento> buscaEvento(int op, Calendar data){
 
         ArrayList<Evento> resultado = new ArrayList<>();
+
+        //dia 1 do mes
         Calendar dia1 = Calendar.getInstance();
         dia1.setTime(data.getTime());
         dia1.set(DAY_OF_MONTH,1);
 
+        //ultimo dia do mes
         Calendar dia2 = Calendar.getInstance();
         dia2.setTime(data.getTime());
-        dia2.set(DAY_OF_MONTH, dia1.getActualMaximum(DAY_OF_MONTH);
+        dia2.set(DAY_OF_MONTH, dia1.getActualMaximum(DAY_OF_MONTH));
 
         String sql = "SELECT * FROM evento WHERE dataocorreu < "+dia2.getTime().getTime() + "AND dataocorreu >= "+dia1.getTime().getTime();
 
@@ -101,7 +105,7 @@ public class  EventosDB extends SQLiteOpenHelper {
                 Date datacadastro = new Date(tuplas.getLong(5));
                 Date dataValida = new Date(tuplas.getLong(6));
 
-                Evento temporario = new Evento((long) id, nome, data, datacadastro, dataValida, urlFoto);
+                Evento temporario = new Evento((long) id, nome, valor, dataocorreu, datacadastro, dataValida, urlFoto);
                 resultado.add(temporario);
 
             } while (tuplas.moveToNext());
@@ -113,6 +117,7 @@ public class  EventosDB extends SQLiteOpenHelper {
 
         return resultado;
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
